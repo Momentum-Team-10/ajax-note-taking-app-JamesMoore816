@@ -1,6 +1,10 @@
 const url = 'http://localhost:3000/notes'
 const form = document.querySelector('#note-form')
 const noteList = document.getElementById('note-list')
+document.getElementById('root').style.marginLeft = '20px'
+document.getElementById('note-text').style.width = '500px'
+
+
 
 // Adds event listener to submit button, which will create a note from the
 // text field and then reset the form
@@ -54,7 +58,7 @@ function renderNoteText(li, note) {
     if (note.hasOwnProperty('updated_at')) {
         li.innerHTML = li.innerHTML + `<div class='f7'>Updated at: ${moment(note.updated_at).format('LT, MMM DD, YYYY')}</div>`
     }
-    li.innerHTML = li.innerHTML + `<i class="delete-button fas fa-trash-alt" ></i > <i class="edit-button fas fa-edit"></i>`
+    li.innerHTML = li.innerHTML + `<br><i class="delete-button fas fa-trash-alt" ></i > <i class="edit-button fas fa-edit"></i>`
 }
 
 
@@ -69,6 +73,7 @@ function listNotes() {
         })
 }
 
+// Deletes item from JSON and removes the element from the DOM
 function deleteNote(note) {
     console.log(url + '/' + `${note.parentElement.id} `)
     fetch(url + '/' + `${note.parentElement.id} `, {
@@ -77,6 +82,7 @@ function deleteNote(note) {
         .then(() => note.parentElement.remove())
 }
 
+// Edits the body and title of the note with new text and adds the "updated_at" property
 function editNote(note) {
     const noteText = document.getElementById('note-text').value
     fetch(url + '/' + `${note.parentElement.id} `, {
@@ -96,6 +102,8 @@ function editNote(note) {
 
 }
 
+// Adds event listeners to trash and edit icons to perform delete and edit note functions when clicked
+// Edit button only works if the note field has text in it
 noteList.addEventListener('click', (event) => {
     const noteText = document.getElementById('note-text').value;
     if (event.target.classList.contains('delete-button')) {
